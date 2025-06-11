@@ -35,7 +35,7 @@ jobs:
         with:
           token: ${{ secrets.KONG_PR_PAT }}
           base: main
-          author: GitHub Actions <noreply@github.com>
+          author: team-gateway-bot <team-gateway+github-bot@konghq.com>
           branch: add-${{ inputs.rock_name }}-${{ inputs.rock_version }}
           add-paths: |
             rocks/*
