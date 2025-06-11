@@ -17,6 +17,8 @@ run-name: Add rock ${{ inputs.rock_name }} ${{ inputs.rock_version }}
 jobs:
   add_rock:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
@@ -33,9 +35,7 @@ jobs:
       - name: Open PR
         uses: Kong/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7
         with:
-          token: ${{ secrets.KONG_PR_PAT }}
           base: main
-          author: team-gateway-bot <team-gateway+github-bot@konghq.com>
           branch: add-${{ inputs.rock_name }}-${{ inputs.rock_version }}
           add-paths: |
             rocks/*
