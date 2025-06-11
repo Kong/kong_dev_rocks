@@ -24,6 +24,12 @@ jobs:
       - name: Add the Rock
         run: ./add-rock.sh ${{ inputs.rock_name }} ${{ inputs.rock_version }}
 
+      - name: Set up Git credentials
+        run: |
+          git config user.name "team-gateway-bot"
+          git config user.email "team-gateway-bot@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.KONG_PR_PAT }}@github.com/Kong/kongrocks-dev.git
+
       - name: Open PR
         uses: Kong/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7
         with:
