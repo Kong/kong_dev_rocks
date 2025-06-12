@@ -17,6 +17,9 @@ run-name: Add rock ${{ inputs.rock_name }} ${{ inputs.rock_version }}
 jobs:
   add_rock:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
@@ -24,19 +27,17 @@ jobs:
       - name: Add the Rock
         run: ./add-rock.sh ${{ inputs.rock_name }} ${{ inputs.rock_version }}
 
-      - name: Generate kong bot app token
-        id: github-app-token
-        uses: tibdex/github-app-token@3beb63f4bd073e61482598c45c71c1019b59b73a # v2.1.0
-        with:
-          app_id: ${{ vars.KONG_GH_APP_ID }}
-          private_key: ${{ secrets.KONG_GH_APP_PRIVATE_KEY }}
+      - name: Set up Git credentials
+        run: |
+          git config user.name "team-gateway-bot"
+          git config user.email "team-gateway-bot@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.KONG_PR_PAT }}@github.com/Kong/kongrocks-dev.git
 
       - name: Open PR
         uses: Kong/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7
         with:
-          token: ${{ steps.github-app-token.outputs.token }}
+          token: ${{ secrets.KONG_PR_PAT }}
           base: main
-          author: GitHub Actions <noreply@github.com>
           branch: add-${{ inputs.rock_name }}-${{ inputs.rock_version }}
           add-paths: |
             rocks/*
