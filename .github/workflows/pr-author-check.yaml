@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: check author
-      if: ${{ github.event.pull_request.user.login != 'github-actions[bot]' }}
+      if: ${{ github.event.pull_request.user.login != 'team-gateway-bot' }}
       run: |
         echo "A PR that adds or removes a rock must be created by the "Import new rock" action instead of being created manually"
         echo "Please use this link to create a PR instead: https://github.com/Kong/kongrocks-dev/actions/workflows/add-rock.yaml"
